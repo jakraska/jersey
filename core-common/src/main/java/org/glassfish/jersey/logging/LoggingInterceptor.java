@@ -216,8 +216,11 @@ abstract class LoggingInterceptor implements WriterInterceptor {
         while(bytesRead != -1 && remainingEntityBufferSize > 0) {
             entityBuffer = new byte[remainingEntityBufferSize + 1];
             bytesRead = stream.read(entityBuffer);
-            b.append(new String(entityBuffer, 0, Math.min(bytesRead, remainingEntityBufferSize), charset));
-            remainingEntityBufferSize -= bytesRead;
+
+            if(bytesRead != -1) {
+                b.append(new String(entityBuffer, 0, Math.min(bytesRead, remainingEntityBufferSize), charset));
+                remainingEntityBufferSize -= bytesRead;
+            }
         }
 
         if (remainingEntityBufferSize <= -1) {
